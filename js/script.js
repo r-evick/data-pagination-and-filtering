@@ -53,7 +53,23 @@ function addPagination(list) {
     <button type="button">${i + 1}</button>
     </li>
     `; 
- }
+  }
+   
+   const buttonNumber = linkList.querySelectorAll('BUTTON');
+     if (buttonNumber.length > 0) {
+       buttonNumber.className = 'active';
+     }
+   
+   linkList.addEventListener('click', (e) => {   
+      if (e.target.tagName == 'BUTTON') { 
+        for (let i = 0; i < buttonNumber.length; i++) {
+         buttonNumber[i].className = '';
+         e.target.className = 'active';       
+        }
+      const pageNumber = e.target.textContent;
+      showPage(list, pageNumber);
+      }
+   }); 
 }
 
 //Insert the elements you have created to the link-list variable you created earlier. 
