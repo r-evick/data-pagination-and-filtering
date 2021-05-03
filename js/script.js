@@ -6,6 +6,18 @@ Code by: Ryan Evick
 
 document.addEventListener('DOMContentLoaded', () => {  //allows JS to run no matter where it's placed in HTML
 
+
+
+  const searchBar = document.querySelector('.header');
+  searchBar.insertAdjacentHTML('beforeend', 
+  `
+  <label for="search" class="student-search">
+  <span>Search by name</span>
+  <input id="search" placeholder="Search by name...">
+  <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+</label>
+  `);
+
 /*
 This function will create and insert/append the elements needed to display a "page" of nine students
 */
@@ -42,7 +54,7 @@ This function will create and insert/append the elements needed for the paginati
 */
 
 function addPagination(list) {
-  const numButtons = parseInt(list.length / 9);
+  const numButtons = parseInt(list.length / 9) + 1;
   const linkList = document.querySelector('.link-list');
   linkList.innerHTML = '';
 
