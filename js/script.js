@@ -6,26 +6,25 @@ Code by: Ryan Evick
 
 document.addEventListener('DOMContentLoaded', () => {  //allows JS to run no matter where it's placed in HTML
 
-
-
-  const searchBar = document.querySelector('.header');
-  searchBar.insertAdjacentHTML('beforeend', 
+const searchForm = document.querySelector('.header');
+searchForm.insertAdjacentHTML('beforeend', 
   `
   <label for="search" class="student-search">
-  <span>Search by name</span>
-  <input id="search" placeholder="Search by name...">
-  <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
-</label>
+    <span>Search by name</span>
+    <input id="search" placeholder="Search by name...">
+    <button id="click" type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+  </label>
   `);
 
 /*
 This function will create and insert/append the elements needed to display a "page" of nine students
 */
+//studentList variable is outside of showPage function so that the studentSearch function can use it
+const studentList = document.querySelector('.student-list');
 
 function showPage(list, page) {
    const startIndex = (page * 9) - 9;
    const endIndex = page * 9; 
-   const studentList = document.querySelector('.student-list');
    studentList.innerHTML = '';
    
    for (let i = 0; i < list.length; i++) {
@@ -84,13 +83,70 @@ function addPagination(list) {
    }); 
 }
 
-//Insert the elements you have created to the link-list variable you created earlier. 
-// The insertAdjacentHTML method and beforeend option works well for this.
+//search bar event handler
 
+function studentSearch(list) {
+  const searchButton = document.getElementById('click');
+  const searchBar = document.getElementById('search');
+  let searchMatch = [];
+
+  searchBar.addEventListener('keyup', (e) => {
+  searchMatch = [];
+  const searchInput = searchBar.value.toLowerCase();
+  for (let i = 0; i < list.length; i++) {
+    const firstName = list[i].name.first.toLowerCase();
+    const lastName = list[i].name.last.toLowerCase();
+    if (firstName.includes(searchInput) || lastName.includes(searchInput)) {
+       searchMatch.push(list[i]);
+    }   
+  }
+
+  if (searchMatch.length === 0) {
+     studentList.innerHTML = '';
+     studentList.insertAdjacentHTML('beforeend',
+     `
+     <h1>Sorry, no results were found</h1>
+     `
+     );
+     addPagination(searchMatch);
+  } else {
+     showPage(searchMatch, 1);
+     addPagination(searchMatch);
+  }
+  });
+
+
+//search button event handler
+
+   searchButton.addEventListener('click', (e) => {
+   searchMatch = [];
+   const searchInput = searchBar.value.toLowerCase();
+   for (let i = 0; i < list.length; i++) {
+     const firstName = list[i].name.first.toLowerCase();
+     const lastName = list[i].name.last.toLowerCase();
+     if (firstName.includes(searchInput) || lastName.includes(searchInput)) {
+        searchMatch.push(list[i]);
+     }   
+   }
+ 
+   if (searchMatch.length === 0) {
+      studentList.innerHTML = '';
+      studentList.insertAdjacentHTML('beforeend',
+      `
+      <h1>Sorry, no results were found</h1>
+      `
+      );
+      addPagination(searchMatch);
+   } else {
+      showPage(searchMatch, 1);
+      addPagination(searchMatch);
+   }
+   });
+}
 
 // Call functions
 
 showPage(data, 1);
 addPagination(data);
-
+studentSearch(data);
 });
