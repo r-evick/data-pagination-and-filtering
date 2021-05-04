@@ -87,6 +87,7 @@ function addPagination(list) {
 
 /*
 This function will add functionality to the search bar
+Some of the below function uses code found from https://www.w3schools.com during research
 */
 
 function studentSearch(list) {
