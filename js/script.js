@@ -6,6 +6,10 @@ Code by: Ryan Evick
 
 document.addEventListener('DOMContentLoaded', () => {  //allows JS to run no matter where it's placed in HTML
 
+/*
+Inserts search bar into the header of the HTML
+*/
+
 const searchForm = document.querySelector('.header');
 searchForm.insertAdjacentHTML('beforeend', 
   `
@@ -19,8 +23,8 @@ searchForm.insertAdjacentHTML('beforeend',
 /*
 This function will create and insert/append the elements needed to display a "page" of nine students
 */
-//studentList variable is outside of showPage function so that the studentSearch function can use it
-const studentList = document.querySelector('.student-list');
+
+const studentList = document.querySelector('.student-list');  //outside of showPage function so studentSearch function can use it
 
 function showPage(list, page) {
    const startIndex = (page * 9) - 9;
@@ -46,14 +50,12 @@ function showPage(list, page) {
    }    
 }
 
-
 /*
-Create the `addPagination` function
 This function will create and insert/append the elements needed for the pagination buttons
 */
 
 function addPagination(list) {
-  const numButtons = parseInt(list.length / 9) + 1;
+  const numButtons = list.length / 9;
   const linkList = document.querySelector('.link-list');
   linkList.innerHTML = '';
 
@@ -71,7 +73,7 @@ function addPagination(list) {
        buttonNumber.className = 'active';
      }
    
-   linkList.addEventListener('click', (e) => {   
+   linkList.addEventListener('click', (e) => {  //will give 'active' class to page clicked and remove it from all others 
       if (e.target.tagName == 'BUTTON') { 
         for (let i = 0; i < buttonNumber.length; i++) {
          buttonNumber[i].className = '';
@@ -83,14 +85,16 @@ function addPagination(list) {
    }); 
 }
 
-//search bar event handler
+/*
+This function will add functionality to the search bar
+*/
 
 function studentSearch(list) {
   const searchButton = document.getElementById('click');
   const searchBar = document.getElementById('search');
   let searchMatch = [];
 
-  searchBar.addEventListener('keyup', (e) => {
+  searchBar.addEventListener('keyup', (e) => { //keyup event listener searches in real-time as user types
   searchMatch = [];
   const searchInput = searchBar.value.toLowerCase();
   for (let i = 0; i < list.length; i++) {
@@ -101,7 +105,7 @@ function studentSearch(list) {
     }   
   }
 
-  if (searchMatch.length === 0) {
+  if (searchMatch.length === 0) {  //if there are no matches, display error message
      studentList.innerHTML = '';
      studentList.insertAdjacentHTML('beforeend',
      `
@@ -115,10 +119,7 @@ function studentSearch(list) {
   }
   });
 
-
-//search button event handler
-
-   searchButton.addEventListener('click', (e) => {
+   searchButton.addEventListener('click', (e) => {  //search button event handler
    searchMatch = [];
    const searchInput = searchBar.value.toLowerCase();
    for (let i = 0; i < list.length; i++) {
@@ -144,7 +145,7 @@ function studentSearch(list) {
    });
 }
 
-// Call functions
+// Call the functions
 
 showPage(data, 1);
 addPagination(data);
